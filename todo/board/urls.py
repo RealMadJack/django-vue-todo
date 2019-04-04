@@ -6,5 +6,5 @@ from .views import index_view
 app_name = BoardConfig.name
 
 urlpatterns = [
-    path("", index_view, name='index')
+    path('', index_view, name='index')
 ]
