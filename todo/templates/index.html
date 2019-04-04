@@ -10,9 +10,9 @@
     <!-- bootstap css -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   </head>
-  <body id="vueapp">
+  <body>
 
-
+    <section id="vueapp"></section>
 
     <!-- Libs -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -36,10 +36,72 @@
             "article_heading": null,
             "article_body": null,
           },
-        }
+        },
         mounted: () => {
+          this.getArticles();
         },
         methods: {
+          getArticles: () => {
+            this.loading = true;
+            this.$http.get("/api/article/")
+              .then((response) => {
+                this.articles = response.data;
+                this.loading = false;
+              })
+              .catch((err) => {
+                this.loading = false;
+                console.log(err);
+              })
+          },
+          getArticle: function(id) {
+            this.loading = true;
+            this.$http.get(`/api/article/${id}/`)
+              .then((response) => {
+                this.currentArticle = response.data;
+                this.loading = false;
+              })
+              .catch((err) => {
+                this.loading = false;
+                console.log(err);
+              })
+          },
+          addArticle: function() {
+            this.loading = true;
+            this.$http.post("/api/article/", this.newArticle)
+              .then((response) => {
+              this.loading = false;
+              this.getArticles();
+              })
+              .catch((err) => {
+              this.loading = false;
+              console.log(err);
+              })
+          },
+            updateArticle: function() {
+            this.loading = true;
+            this.$http.put(`/api/article/${this.currentArticle.article_id}/`,     this.currentArticle)
+              .then((response) => {
+              this.loading = false;
+              this.currentArticle = response.data;
+              this.getArticles();
+              })
+              .catch((err) => {
+              this.loading = false;
+              console.log(err);
+              })
+          },
+          deleteArticle: function(id) {
+            this.loading = true;
+            this.$http.delete(`/api/article/${id}/` )
+              .then((response) => {
+              this.loading = false;
+              this.getArticles();
+              })
+              .catch((err) => {
+              this.loading = false;
+              console.log(err);
+              })
+          },
         }
       });
     </script>
