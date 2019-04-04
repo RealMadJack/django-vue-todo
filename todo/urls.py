@@ -20,5 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include("todo.board.urls")),
-    path('article', TemplateView.as_view(template_name='index.html')),
+    path('article/', TemplateView.as_view(template_name='index.html')),
 ]
